@@ -68,11 +68,14 @@
             left: 20px;
             background: rgba(0, 0, 0, 0.5);
             padding: 10px;
-            border-radius: 10px;
+            border-radius: 50%;
             color: white;
-            font-size: 1rem;
+            font-size: 2rem;
             cursor: pointer;
             z-index: 20;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .settings-menu {
@@ -87,6 +90,11 @@
             z-index: 20;
         }
 
+        .settings-menu label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
         .settings-menu input {
             margin: 5px 0;
         }
@@ -99,7 +107,7 @@
     </div>
     <canvas id="fireworks"></canvas>
 
-    <div class="settings">Settings</div>
+    <div class="settings">🎛️</div>
     <div class="settings-menu">
         <label>
             Background Color:
@@ -108,6 +116,14 @@
         <label>
             Text Color:
             <input type="color" id="text-color" value="#ffffff">
+        </label>
+        <label>
+            Firework Intensity:
+            <input type="range" id="firework-intensity" min="1" max="10" value="5">
+        </label>
+        <label>
+            Firework Speed:
+            <input type="range" id="firework-speed" min="1" max="10" value="5">
         </label>
     </div>
 
@@ -118,6 +134,8 @@
         const settingsMenu = document.querySelector('.settings-menu');
         const bgColorInput = document.getElementById('bg-color');
         const textColorInput = document.getElementById('text-color');
+        const fireworkIntensityInput = document.getElementById('firework-intensity');
+        const fireworkSpeedInput = document.getElementById('firework-speed');
 
         function updateCountdown() {
             const now = new Date();
@@ -180,8 +198,9 @@
             const x = Math.random() * canvas.width;
             const y = Math.random() * canvas.height / 2;
             const color = randomColor();
+            const intensity = parseInt(fireworkIntensityInput.value, 10);
 
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < intensity * 10; i++) {
                 particles.push(new Particle(x, y, color));
             }
         }
@@ -202,7 +221,7 @@
             requestAnimationFrame(animate);
         }
 
-        setInterval(createFirework, 1000);
+        setInterval(createFirework, 1000 / parseInt(fireworkSpeedInput.value, 10));
         animate();
 
         window.addEventListener('resize', () => {
@@ -236,6 +255,18 @@
         textColorInput.addEventListener('input', (e) => {
             countdownElement.style.color = e.target.value;
         });
+
+        fireworkIntensityInput.addEventListener('input', () => {
+            clearInterval(fireworkInterval);
+            fireworkInterval = setInterval(createFirework, 1000 / parseInt(fireworkSpeedInput.value, 10));
+        });
+
+        fireworkSpeedInput.addEventListener('input', () => {
+            clearInterval(fireworkInterval);
+            fireworkInterval = setInterval(createFirework, 1000 / parseInt(fireworkSpeedInput.value, 10));
+        });
+
+        let fireworkInterval = setInterval(createFirework, 1000);
     </script>
 </body>
 </html>
