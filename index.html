@@ -44,16 +44,6 @@
             z-index: 5;
         }
 
-        @keyframes rainbow {
-            0% { color: red; }
-            16% { color: orange; }
-            33% { color: yellow; }
-            50% { color: green; }
-            66% { color: blue; }
-            83% { color: indigo; }
-            100% { color: violet; }
-        }
-
         @keyframes slideOut {
             0% { transform: translateY(0); }
             100% { transform: translateY(-100vh); }
@@ -64,12 +54,41 @@
             100% { transform: translateY(0); }
         }
 
-        .rainbow {
-            animation: rainbow 1s infinite, slideOut 2s forwards;
+        .slideOut {
+            animation: slideOut 2s forwards;
         }
 
         .slideBack {
             animation: slideIn 2s forwards;
+        }
+
+        .settings {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .settings-menu {
+            display: none;
+            position: absolute;
+            bottom: 60px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            z-index: 20;
+        }
+
+        .settings-menu input {
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -80,9 +99,25 @@
     </div>
     <canvas id="fireworks"></canvas>
 
+    <div class="settings">Settings</div>
+    <div class="settings-menu">
+        <label>
+            Background Color:
+            <input type="color" id="bg-color" value="#1a1a1d">
+        </label>
+        <label>
+            Text Color:
+            <input type="color" id="text-color" value="#ffffff">
+        </label>
+    </div>
+
     <script>
         const countdownElement = document.querySelector('.countdown');
         const timeElement = document.getElementById('time');
+        const settingsButton = document.querySelector('.settings');
+        const settingsMenu = document.querySelector('.settings-menu');
+        const bgColorInput = document.getElementById('bg-color');
+        const textColorInput = document.getElementById('text-color');
 
         function updateCountdown() {
             const now = new Date();
@@ -175,20 +210,32 @@
             canvas.height = window.innerHeight;
         });
 
-        // Click Event for Moving Rainbow Effect
+        // Click Event for Moving Text Effect
         document.body.addEventListener('click', () => {
-            countdownElement.classList.add('rainbow');
+            countdownElement.classList.add('slideOut');
 
             setTimeout(() => {
-                countdownElement.classList.remove('rainbow');
+                countdownElement.classList.remove('slideOut');
                 countdownElement.classList.add('slideBack');
-            }, 3000);
+            }, 2000);
 
             setTimeout(() => {
                 countdownElement.classList.remove('slideBack');
-            }, 5000);
+            }, 4000);
+        });
+
+        // Settings Functionality
+        settingsButton.addEventListener('click', () => {
+            settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        bgColorInput.addEventListener('input', (e) => {
+            document.body.style.background = e.target.value;
+        });
+
+        textColorInput.addEventListener('input', (e) => {
+            countdownElement.style.color = e.target.value;
         });
     </script>
 </body>
 </html>
-
