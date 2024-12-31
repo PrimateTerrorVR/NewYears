@@ -22,6 +22,7 @@
         .countdown {
             text-align: center;
             z-index: 10;
+            transition: transform 2s ease, color 2s ease;
         }
 
         .countdown h1 {
@@ -42,6 +43,16 @@
             height: 100%;
             z-index: 5;
         }
+
+        @keyframes rainbow {
+            0% { color: red; }
+            16% { color: orange; }
+            33% { color: yellow; }
+            50% { color: green; }
+            66% { color: blue; }
+            83% { color: indigo; }
+            100% { color: violet; }
+        }
     </style>
 </head>
 <body>
@@ -52,7 +63,8 @@
     <canvas id="fireworks"></canvas>
 
     <script>
-        const countdownElement = document.getElementById('time');
+        const countdownElement = document.querySelector('.countdown');
+        const timeElement = document.getElementById('time');
 
         function updateCountdown() {
             const now = new Date();
@@ -64,7 +76,7 @@
             const minutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
             const seconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
 
-            countdownElement.textContent = `${hours}:${minutes}:${seconds}`;
+            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
         }
 
         setInterval(updateCountdown, 1000);
@@ -88,9 +100,10 @@
                 this.y = y;
                 this.color = color;
                 this.radius = Math.random() * 4 + 2;
-                this.velocityX = Math.random() * 6 - 3;
-                this.velocityY = Math.random() * 6 - 3;
+                this.velocityX = Math.random() * 3 - 1.5;
+                this.velocityY = Math.random() * 3 - 1.5;
                 this.alpha = 1;
+                this.decay = Math.random() * 0.01 + 0.005;
             }
 
             draw() {
@@ -106,7 +119,7 @@
             update() {
                 this.x += this.velocityX;
                 this.y += this.velocityY;
-                this.alpha -= 0.02;
+                this.alpha -= this.decay;
             }
         }
 
@@ -115,13 +128,14 @@
             const y = Math.random() * canvas.height / 2;
             const color = randomColor();
 
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 100; i++) {
                 particles.push(new Particle(x, y, color));
             }
         }
 
         function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach((particle, index) => {
                 particle.update();
@@ -141,6 +155,12 @@
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+        });
+
+        // Click Event for Moving Rainbow Effect
+        document.body.addEventListener('click', () => {
+            countdownElement.style.animation = 'rainbow 1s infinite';
+            countdownElement.style.transform = 'translateY(-100vh)';
         });
     </script>
 </body>
