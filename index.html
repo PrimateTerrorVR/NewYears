@@ -53,6 +53,24 @@
             83% { color: indigo; }
             100% { color: violet; }
         }
+
+        @keyframes slideOut {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100vh); }
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(0); }
+        }
+
+        .rainbow {
+            animation: rainbow 1s infinite, slideOut 2s forwards;
+        }
+
+        .slideBack {
+            animation: slideIn 2s forwards;
+        }
     </style>
 </head>
 <body>
@@ -159,9 +177,18 @@
 
         // Click Event for Moving Rainbow Effect
         document.body.addEventListener('click', () => {
-            countdownElement.style.animation = 'rainbow 1s infinite';
-            countdownElement.style.transform = 'translateY(-100vh)';
+            countdownElement.classList.add('rainbow');
+
+            setTimeout(() => {
+                countdownElement.classList.remove('rainbow');
+                countdownElement.classList.add('slideBack');
+            }, 3000);
+
+            setTimeout(() => {
+                countdownElement.classList.remove('slideBack');
+            }, 5000);
         });
     </script>
 </body>
 </html>
+
