@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Year's Countdown</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: radial-gradient(circle, #1a1a1d, #0d0d0f);
+            color: white;
+            font-family: 'Titan One', sans-serif;
+            overflow: hidden;
+        }
+
+        .countdown {
+            text-align: center;
+            z-index: 10;
+        }
+
+        .countdown h1 {
+            font-size: 4rem;
+            margin: 0;
+        }
+
+        .countdown p {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="countdown">
+        <h1>New Year's Countdown</h1>
+        <p id="time">00:00:00</p>
+    </div>
+    <canvas id="fireworks"></canvas>
+
+    <script>
+        const countdownElement = document.getElementById('time');
+
+        function updateCountdown() {
+            const now = new Date();
+            const nextYear = now.getFullYear() + 1;
+            const newYear = new Date(`January 1, ${nextYear} 00:00:00`);
+            const diff = newYear - now;
+
+            const hours = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+            const minutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
+            const seconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+
+            countdownElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateCountdown, 1000);
+
+        // Fireworks
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+
+        function randomColor() {
+            return `hsl(${Math.random() * 360}, 100%, 50%)`;
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.radius = Math.random() * 4 + 2;
+                this.velocityX = Math.random() * 6 - 3;
+                this.velocityY = Math.random() * 6 - 3;
+                this.alpha = 1;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            update() {
+                this.x += this.velocityX;
+                this.y += this.velocityY;
+                this.alpha -= 0.02;
+            }
+        }
+
+        function createFirework() {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height / 2;
+            const color = randomColor();
+
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((particle, index) => {
+                particle.update();
+                particle.draw();
+
+                if (particle.alpha <= 0) {
+                    particles.splice(index, 1);
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        setInterval(createFirework, 1000);
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
