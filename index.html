@@ -1,122 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Printable Word List</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Year's Countdown</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: radial-gradient(circle, #1a1a1d, #0d0d0f);
+            color: white;
+            font-family: 'Titan One', sans-serif;
+            overflow: hidden;
+        }
+
+        .countdown {
+            text-align: center;
+            z-index: 10;
+            transition: transform 2s ease, color 2s ease;
+        }
+
+        .countdown h1 {
+            font-size: 4rem;
+            margin: 0;
+        }
+
+        .countdown p {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+        }
+
+        @keyframes slideOut {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100vh); }
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(0); }
+        }
+
+        .slideOut {
+            animation: slideOut 2s forwards;
+        }
+
+        .slideBack {
+            animation: slideIn 2s forwards;
+        }
+
+        .settings {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 20;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .settings-menu {
+            display: none;
+            position: absolute;
+            bottom: 60px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            z-index: 20;
+        }
+
+        .settings-menu label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .settings-menu input {
+            margin: 5px 0;
+        }
+
+        @keyframes crazyEffect {
+            0% { transform: rotate(0); background-color: #1a1a1d; }
+            25% { transform: rotate(15deg); background-color: #ff4500; }
+            50% { transform: rotate(-15deg); background-color: #32cd32; }
+            75% { transform: rotate(15deg); background-color: #1e90ff; }
+            100% { transform: rotate(0); background-color: #1a1a1d; }
+        }
+
+        .crazy {
+            animation: crazyEffect 1s infinite;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Printable Word List</h1>
-  </header>
-
-  <section id="word-list">
-    <h2>Word List</h2>
-    <div id="words-container">
-      <ul>
-        <li>Hi = Salutis</li>
-        <li>Bye = Valedi</li>
-        <li>Yes = Affirmo</li>
-        <li>No = Negara</li>
-        <li>The = Ilara</li>
-        <li>This = Hocara</li>
-        <li>That = Iltara</li>
-        <li>Here = Hicara</li>
-        <li>There = Ibiara</li>
-        <li>Who = Quira</li>
-        <li>What = Quida</li>
-        <li>When = Quandis</li>
-        <li>Where = Ubira</li>
-        <li>Why = Curis</li>
-        <li>How = Quomoda</li>
-        <li>Good = Bona</li>
-        <li>Bad = Malara</li>
-        <li>Happy = Felicia</li>
-        <li>Sad = Trista</li>
-        <li>Fast = Celeris</li>
-        <li>Slow = Lenta</li>
-        <li>Big = Magna</li>
-        <li>Small = Parva</li>
-        <li>Hot = Calora</li>
-        <li>Cold = Frigora</li>
-        <li>Old = Vetera</li>
-        <li>New = Novara</li>
-        <li>Right = Recta</li>
-        <li>Left = Sinistra</li>
-        <li>Up = Supra</li>
-        <li>Down = Infra</li>
-        <li>In = Intara</li>
-        <li>Out = Extra</li>
-        <li>Open = Aperta</li>
-        <li>Close = Clausa</li>
-        <li>Start = Inita</li>
-        <li>Stop = Finita</li>
-        <li>Go = Proceda</li>
-        <li>Come = Venira</li>
-        <li>Walk = Ambula</li>
-        <li>Run = Currara</li>
-        <li>Eat = Comeda</li>
-        <li>Drink = Bibara</li>
-        <li>Sleep = Dormira</li>
-        <li>Wake = Vigilis</li>
-        <li>Think = Cogita</li>
-        <li>Know = Sciera</li>
-        <li>See = Vidara</li>
-        <li>Hear = Audira</li>
-        <li>Feel = Sentira</li>
-        <li>Touch = Tangira</li>
-        <li>Give = Donara</li>
-        <li>Take = Capira</li>
-        <li>Love = Amara</li>
-        <li>Hate = Odira</li>
-        <li>Believe = Credara</li>
-        <li>Trust = Fidara</li>
-        <li>Fear = Timora</li>
-        <li>Laugh = Ridira</li>
-        <li>Cry = Plorara</li>
-        <li>Win = Vincera</li>
-        <li>Lose = Perda</li>
-        <li>Play = Ludira</li>
-        <li>Work = Laborara</li>
-        <li>Rest = Reposara</li>
-        <li>Begin = Initia</li>
-        <li>End = Termina</li>
-        <li>Teach = Docera</li>
-        <li>Learn = Discera</li>
-        <li>Build = Fabrica</li>
-        <li>Destroy = Ruinara</li>
-        <li>Help = Auxira</li>
-        <li>Save = Servara</li>
-        <li>Need = Necessa</li>
-        <li>Want = Volara</li>
-        <li>Like = Placera</li>
-        <li>Dislike = Desplacera</li>
-        <li>Show = Monstra</li>
-        <li>Hide = Celara</li>
-        <li>Open = Aperira</li>
-        <li>Close = Claudira</li>
-        <li>Call = Vocara</li>
-        <li>Answer = Responda</li>
-        <li>Ask = Rogara</li>
-        <li>Tell = Narrara</li>
-        <li>Speak = Loquira</li>
-        <li>Read = Legira</li>
-        <li>Write = Scribira</li>
-        <li>Count = Numerara</li>
-        <li>Measure = Metira</li>
-        <li>Break = Frangira</li>
-        <li>Fix = Reparara</li>
-        <li>Carry = Portara</li>
-        <li>Throw = Iacira</li>
-        <li>Catch = Capira</li>
-      </ul>
+    <div class="countdown">
+        <h1>New Year's Countdown</h1>
+        <p id="time">00:00:00</p>
     </div>
-    <button id="print-btn" onclick="window.print()">Print Word List</button>
-  </section>
+    <canvas id="fireworks"></canvas>
 
-  <footer>
-    <p>&copy; 2025 Printable Word List</p>
-  </footer>
+    <div class="settings">Settings</div>
+    <div class="settings-menu">
+        <label>
+            Background Color:
+            <input type="color" id="bg-color" value="#1a1a1d">
+        </label>
+        <label>
+            Text Color:
+            <input type="color" id="text-color" value="#ffffff">
+        </label>
+        <label>
+            Firework Intensity:
+            <input type="range" id="firework-intensity" min="1" max="10" value="5">
+        </label>
+        <label>
+            Firework Speed:
+            <input type="range" id="firework-speed" min="1" max="10" value="5">
+        </label>
+        <label>
+            Font Style:
+            <select id="font-style">
+                <option value="Titan One">Titan One</option>
+                <option value="Arial">Arial</option>
+                <option value="Courier New">Courier New</option>
+            </select>
+        </label>
+        <label>
+            Fake New Year:
+            <button id="fake-new-year">Simulate New Year</button>
+        </label>
+    </div>
+
+    <script>
+        const countdownElement = document.querySelector('.countdown');
+        const timeElement = document.getElementById('time');
+        const settingsButton = document.querySelector('.settings');
+        const settingsMenu = document.querySelector('.settings-menu');
+        const bgColorInput = document.getElementById('bg-color');
+        const textColorInput = document.getElementById('text-color');
+        const fireworkIntensityInput = document.getElementById('firework-intensity');
+        const fireworkSpeedInput = document.getElementById('firework-speed');
+        const fontStyleInput = document.getElementById('font-style');
+        const fakeNewYearButton = document.getElementById('fake-new-year');
+
+        function updateCountdown() {
+            const now = new Date();
+            const nextYear = now.getFullYear() + 1;
+            const newYear = new Date(`January 1, ${nextYear} 00:00:00`);
+            const diff = newYear - now;
+
+            const hours = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+            const minutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
+            const seconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+
+            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+
+            if (diff <= 0) {
+                document.body.classList.add('crazy');
+                setTimeout(() => {
+                    document.body.classList.remove('crazy');
+                }, 5000);
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+
+        // Fireworks
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+
+        function randomColor() {
+            return `hsl(${Math.random() * 360}, 100%, 50%)`;
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.radius = Math.random() * 4 + 2;
+                this.velocityX = Math.random() * 3 - 1.5;
+                this.velocityY = Math.random() * 3 - 1.5;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.01 + 0.005;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            update() {
+                this.x += this.velocityX;
+                this.y += this.velocityY;
+                this.alpha -= this.decay;
+            }
+        }
+
+        function createFirework() {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height / 2;
+            const color = randomColor();
+            const intensity = parseInt(fireworkIntensityInput.value, 10);
+
+            for (let i = 0; i < intensity * 10; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((particle, index) => {
+                particle.update();
+                particle.draw();
+
+                if (particle.alpha <= 0) {
+                    particles.splice(index, 1);
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        setInterval(createFirework, 1000);
+        animate();
+
+        // Settings functionality
+        settingsButton.addEventListener('click', () => {
+            settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        bgColorInput.addEventListener('input', (e) => {
+            document.body.style.background = e.target.value;
+        });
+
+        textColorInput.addEventListener('input', (e) => {
+            countdownElement.style.color = e.target.value;
+        });
+
+        fontStyleInput.addEventListener('change', (e) => {
+            countdownElement.style.fontFamily = e.target.value;
+        });
+
+        fakeNewYearButton.addEventListener('click', () => {
+            document.body.classList.add('crazy');
+            setTimeout(() => {
+                document.body.classList.remove('crazy');
+            }, 5000);
+        });
+
+        // Responsive canvas
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Transition to 2026 New Year
+        setTimeout(() => {
+            const now = new Date();
+            if (now.getFullYear() >= 2025) {
+                const nextYearHeader = document.createElement('h1');
+                nextYearHeader.textContent = "Welcome to 2026!";
+                nextYearHeader.style.position = "absolute";
+                nextYearHeader.style.top = "50%";
+                nextYearHeader.style.left = "50%";
+                nextYearHeader.style.transform = "translate(-50%, -50%)";
+                nextYearHeader.style.fontSize = "5rem";
+                nextYearHeader.style.color = "white";
+                nextYearHeader.style.fontFamily = 'Titan One, sans-serif';
+                document.body.appendChild(nextYearHeader);
+                setTimeout(() => {
+                    nextYearHeader.style.transition = "opacity 2s ease";
+                    nextYearHeader.style.opacity = "0";
+                }, 5000);
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
